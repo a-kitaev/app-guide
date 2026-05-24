@@ -40,190 +40,9 @@
       return await res.json();
     }
 
-    // ─── BUILDING DATA ────────────────────────────────────────────────────────
-    const BUILDINGS = [
-      // ROSSLYN
-      { id:"r1", hood:"Rosslyn", name:"Central Place", addr:"1800 N Lynn St, Arlington, VA 22209",
-        price2:"$4,234", price2hi:"$4,549", price3:"$6,369", price3hi:"$8,377", rating:4.4, metro:"2 min · Rosslyn",
-        gym:"Great", gymNote:"Fitness center + resort pool sundeck",
-        desc:"31-story flagship directly above Rosslyn Metro. Floor-to-ceiling windows, 9-ft ceilings, quartz counters, 24/7 concierge. Resort pool, coworking suites.",
-        why:"Literally connected to the station — zero friction for DC commuters. Jaw-dropping Georgetown & Potomac views." },
-      { id:"r2", hood:"Rosslyn", name:"Cortland Rosslyn", addr:"1771 N Pierce St, Arlington, VA 22209",
-        price2:"$3,944", price2hi:"$4,625", price3:"$6,353", price3hi:"$6,353", rating:4.6, metro:"5 min · Rosslyn",
-        gym:"Excellent", gymNote:"2 massive gyms + rock climbing wall + yoga studio",
-        desc:"Brand-new twin towers. Dual rooftop pools with Potomac views, indoor spa, rock-climbing wall, poker room, Bosch appliances throughout.",
-        why:"Best all-around amenity stack in the entire corridor. Rock climbing + yoga + dual pools — genuinely unmatched. Consistently highest resident satisfaction." },
-      { id:"r3", hood:"Rosslyn", name:"Rosslyn Towers", addr:"1919 N Nash St, Arlington, VA 22209",
-        price2:"$3,595+", price2hi:"zillow", price3:"~$5,400", rating:4.2, metro:"7 min · Rosslyn",
-        gym:"Excellent", gymNote:"Boxing ring · TRX zone · Peloton · Precor cardio",
-        desc:"514-unit complex connecting to a full-service Hilton hotel. Panoramic DC views, balconies on select units, EV charging. World-class gym with a literal boxing ring.",
-        why:"Only building in the corridor with a boxing ring on-site. Hotel-level services incoming. Walk across Key Bridge to Georgetown." },
-      { id:"r4", hood:"Rosslyn", name:"Rosslyn Heights", addr:"1804 N Quinn St, Arlington, VA 22209",
-        price2:"$3,059+", price2hi:"zillow", price3:"N/A", rating:4.1, metro:"4 min · Rosslyn / 6 min · Courthouse",
-        gym:"Medium", gymNote:"Fitness center + pool + sundeck + grilling area",
-        desc:"Tree-lined mid-rise between Rosslyn and Courthouse. Larger-than-average floor plans, real wood-burning fireplaces, private balconies. More residential feel.",
-        why:"Best value for space in Rosslyn. Calmer neighborhood atmosphere while staying metro-connected between two stations." },
-      { id:"r5", hood:"Rosslyn", name:"Sedona | Slate", addr:"1510 Clarendon Blvd, Arlington, VA 22209",
-        price2:"$3,197+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"8 min · Rosslyn / 6 min · Courthouse",
-        gym:"Great", gymNote:"Pool · gym · rec room · concierge · EV charging",
-        desc:"Twin-building community (Sedona + Slate) between Rosslyn and Courthouse. Pool, gym, rec room, bike storage. 5-min walk to Safeway and Target.",
-        why:"Prime midpoint location. Walkable to grocery, Target, restaurants. Good amenities without top-tier pricing." },
-      { id:"r6", hood:"Rosslyn", name:"1800 Oak", addr:"1800 N Oak St, Arlington, VA 22209",
-        price2:"$3,314+", price2hi:"zillow", price3:"N/A", rating:4.5, metro:"5 min · Rosslyn",
-        gym:"Medium", gymNote:"Fitness center + pool + hot tub + courtyard garden",
-        desc:"Equity Residential mid-rise steps from Rosslyn Metro. Renovated units with granite counters, in-unit W/D. 24-hr concierge, pool, hot tub, courtyard.",
-        why:"9.9/10 on Zumper — best management ratings in North Rosslyn. More affordable than glass towers while staying very close to the metro." },
-      { id:"r7", hood:"Rosslyn", name:"The Crestmont", addr:"1301 N Rhodes St, Arlington, VA 22209",
-        price2:"~$2,800", price3:"~$3,500", rating:4.2, metro:"6 min · Rosslyn",
-        gym:"Small", gymNote:"Basic fitness room; pool on-site",
-        desc:"Pet-friendly community near Georgetown and I-66. 1-, 2-, and 3-BR floor plans in a quieter residential setting. Pool, garden, appointed parking.",
-        why:"Rare 3BR availability in Rosslyn at below-market pricing. Best for those who prefer a quieter, non-highrise atmosphere close to Georgetown." },
-      // COURTHOUSE
-      { id:"c1", hood:"Courthouse", name:"Avalon Courthouse Place", addr:"1320 N Veitch St, Arlington, VA 22201",
-        price2:"$3,459+", price2hi:"zillow", price3:"Limited", rating:4.0, metro:"3 min · Courthouse",
-        gym:"Great", gymNote:"Sports club · split-level pool · library · business center",
-        desc:"AvalonBay community steps from Courthouse Metro. Renovated units, private patios, walk-in closets, in-unit W/D. Split-level pool, sports club, and library.",
-        why:"Perfect blend of metro access and neighborhood calm. Most reliable large-operator management in the corridor." },
-      { id:"c2", hood:"Courthouse", name:"Courthouse Plaza", addr:"2250 Clarendon Blvd, Arlington, VA 22201",
-        price2:"$2,912+", price2hi:"zillow", price3:"N/A", rating:4.2, metro:"4 min · Courthouse",
-        gym:"Medium", gymNote:"Fitness center with DC skyline views",
-        desc:"Smoke-free mid-rise with granite counters, spectacular DC/Rosslyn views. Pet-friendly, walk score 96. Jogging trail access to Arlington Farmers Market.",
-        why:"Great DC views at a walkable location. Farmers Market walking distance is a genuine quality-of-life win." },
-      { id:"c3", hood:"Courthouse", name:"Meridian at Courthouse Commons", addr:"1401 N Taft St, Arlington, VA 22201",
-        price2:"$3,035+", price2hi:"zillow", price3:"N/A", rating:3.9, metro:"5 min · Courthouse",
-        gym:"Medium", gymNote:"Fitness center · basketball half-court · BBQ fire pit courtyard",
-        desc:"Renovated courtyard community with fire pits, car wash service, aerobics classes, basketball half court. Concierge, Nest thermostats.",
-        why:"Best value 2BR in the Courthouse zone. Lively community with active management events." },
-      { id:"c4", hood:"Courthouse", name:"The Palatine", addr:"1515 N Courthouse Rd, Arlington, VA 22201",
-        price2:"~$3,760", price3:"Limited", rating:4.1, metro:"4 min · Courthouse",
-        gym:"Great", gymNote:"Upscale fitness center + luxury finishes",
-        desc:"Boutique luxury building near Courthouse Metro. High-end finishes. Adjacent to Arlington Courthouse — very safe block. AMC cinema next door.",
-        why:"Boutique feel without mega-complex scale. Cinema literally next door. One of the safest blocks in the corridor." },
-      { id:"c5", hood:"Courthouse", name:"The Prime at Arlington Courthouse", addr:"1415 N Taft St, Arlington, VA 22201",
-        price2:"~$3,035", price3:"N/A", rating:4.0, metro:"6 min · Courthouse",
-        gym:"Great", gymNote:"Modern fitness center + pool + rooftop access",
-        desc:"Newer luxury community a short walk to Courthouse Metro. Pool, modern gym, rooftop access.",
-        why:"Strong management reputation. Walkable to Rosslyn nightlife and Clarendon dining. Quieter residential block." },
-      // VIRGINIA SQUARE
-      { id:"v1", hood:"Virginia Square", name:"Virginia Square Towers", addr:"3444 Fairfax Dr, Arlington, VA 22201",
-        price2:"$3,095+", price2hi:"zillow", price3:"~$4,200", rating:4.3, metro:"1 min · Virginia Square",
-        gym:"Great", gymNote:"Modern fitness center + pool + EV charging",
-        desc:"534-unit resort-style tower at the Virginia Square Metro entrance. Designer kitchens, luxury baths, pool, concierge, business center, EV charging. One of few 3BR options.",
-        why:"On the metro platform in under 2 minutes. Quieter neighborhood feel with genuine walkability. Good 3BR availability." },
-      { id:"v2", hood:"Virginia Square", name:"Virginia Square (901 N Nelson)", addr:"901 N Nelson St, Arlington, VA 22203",
-        price2:"$3,898+", price2hi:"zillow", price3:"Limited", rating:4.0, metro:"2 min · Virginia Square",
-        gym:"Medium", gymNote:"Fitness center · pool · dog park access",
-        desc:"Mid-rise steps from Virginia Square Metro. Boutique shopping, dining, music venues nearby. Dog park, biking/jogging trails, easy I-66 access.",
-        why:"Genuine neighborhood character. Quieter than Ballston while staying fully on the Orange/Silver line." },
-      { id:"v3", hood:"Virginia Square", name:"Latitude", addr:"3601 Fairfax Dr, Arlington, VA 22201",
-        price2:"$3,235+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"5 min · Virginia Sq / 6 min · Clarendon",
-        gym:"Medium", gymNote:"Fitness center + outdoor space + EV charging",
-        desc:"Modern mid-corridor community between Virginia Square and Clarendon. Balconies, in-unit W/D, EV charging. Frequently offers concession specials.",
-        why:"Equidistant between two metro stops. Good value for the corridor without the highest price premium." },
-      { id:"v4", hood:"Virginia Square", name:"1020 Apartments / Library Courts", addr:"1020 N Quincy St, Arlington, VA 22201",
-        price2:"~$2,000", price3:"N/A", rating:3.8, metro:"5 min · Virginia Sq / 6 min · Clarendon",
-        gym:"None", gymNote:"No gym; most green space per unit in Arlington",
-        desc:"Smaller mid-rise with the most green space per residence in Arlington. Budget-friendly option between two metro stations. Quiet, residential feel.",
-        why:"Best price in the corridor by a wide margin. Quiet and green close to both metros." },
-      // BALLSTON
-      { id:"b1", hood:"Ballston", name:"4040 Wilson", addr:"4040 Wilson Blvd, Arlington, VA 22203",
-        price2:"$4,195+", price2hi:"zillow", price3:"N/A", rating:4.4, metro:"3 min · Ballston",
-        gym:"Excellent", gymNote:"VIDA Fitness on-site — Virginia's first boutique gym",
-        desc:"Ballston's tallest building — all apartments start at the 11th floor. On-site VIDA Fitness and The Salt Line restaurant. Penthouse-level views from every unit. Bozzuto-managed.",
-        why:"VIDA Fitness on the ground floor is a serious differentiator. Every unit starts above 11 floors." },
-      { id:"b2", hood:"Ballston", name:"The View Ballston", addr:"4000 Wilson Blvd, Arlington, VA 22203",
-        price2:"~$3,575", price3:"N/A", rating:4.3, metro:"4 min · Ballston",
-        gym:"Great", gymNote:"Rooftop deck + 2 plunge pools + fire pit + panoramic DC views",
-        desc:"Luxury tower at Liberty Center with rooftop deck, two plunge pools, fire pit, 24-hr concierge. Walk score 92.",
-        why:"Outstanding community reputation — staff events, rooftop panorama, and warm management are consistent highlights." },
-      { id:"b3", hood:"Ballston", name:"J·Sol", addr:"900 N Quincy St, Arlington, VA 22203",
-        price2:"$3,855", price2hi:"$4,335", price3:"N/A", rating:4.2, metro:"3 min · Ballston",
-        gym:"Great", gymNote:"Rooftop infinity pool · sky lounge · fitness center",
-        desc:"22-story luxury tower. Rooftop infinity pool, sky lounge, co-working spaces, fitness center. Walk score 94. Concierge, pet-friendly. Sleek, design-forward interiors.",
-        why:"Rooftop infinity pool is genuinely distinctive. Strong boutique identity. Ballston Quarter literally steps away." },
-      { id:"b4", hood:"Ballston", name:"Ballston Place", addr:"901 N Pollard St, Arlington, VA 22203",
-        price2:"$3,195+", price2hi:"zillow", price3:"~$4,200", rating:4.1, metro:"4 min · Ballston / 6 min · Virginia Sq",
-        gym:"Medium", gymNote:"Fitness center + outdoor pool + fire pit courtyard",
-        desc:"383-unit 24-story tower, walk score 93. In-unit W/D, hardwood floors. Outdoor pool, fire pit courtyard, billiards clubroom, 24-hr concierge, indoor bike storage.",
-        why:"Best management reputation in the corridor. Strong community atmosphere. Equidistant between two metro stops." },
-      { id:"b5", hood:"Ballston", name:"Quincy Plaza", addr:"3900 Fairfax Dr, Arlington, VA 22203",
-        price2:"$3,250+", price2hi:"zillow", price3:"~$3,840", rating:4.2, metro:"4 min · Ballston / 5 min · Virginia Sq",
-        gym:"Great", gymNote:"Fitness center + pool + EV charging + outdoor space",
-        desc:"Mid-corridor tower between both metro stations. Pool, concierge, EV charging, business center, private balconies. One of the few buildings with consistent 3BR availability.",
-        why:"Best value 3BR in the Ballston-Virginia Square zone. Mid-corridor equidistance is a daily convenience win." },
-      { id:"b6", hood:"Ballston", name:"AVA Ballston Square", addr:"850 N Randolph St, Arlington, VA 22203",
-        price2:"$3,345", price2hi:"$3,845", price3:"N/A", rating:4.0, metro:"3 min · Ballston",
-        gym:"Medium", gymNote:"Modern fitness center; Furnished+ option with all utilities included",
-        desc:"AvalonBay twin-building community at Ballston Metro. Furnished+ option — furniture + all utilities + Wi-Fi included.",
-        why:"Most flexible lease setup in the corridor. Furnished+ is ideal for an August move — just show up and start living." },
-      // CLARENDON
-      { id:"cl1", hood:"Clarendon", name:"The Beacon Clarendon", addr:"1128 N Irving St, Arlington, VA 22201",
-        price2:"$3,837+", price2hi:"zillow", price3:"~$5,045", rating:4.5, metro:"4 min · Clarendon",
-        gym:"Great", gymNote:"Bozzuto-managed · wellness-focused amenities + rooftop",
-        desc:"Bozzuto-managed luxury building. Expansive floor plans, wellness-focused amenities, rooftop access. One of the highest-rated buildings in Arlington per resident reviews.",
-        why:"Highest Google rating in the list. Bozzuto management is consistently excellent. Good 3BR availability for Clarendon." },
-      { id:"cl2", hood:"Clarendon", name:"Ten at Clarendon", addr:"3110 10th St N, Arlington, VA 22201",
-        price2:"$3,475+", price2hi:"zillow", price3:"~$5,082", rating:4.3, metro:"5 min · Clarendon",
-        gym:"Great", gymNote:"State-of-the-art fitness + rooftop garden + bike workshop + dog wash",
-        desc:"LEED Platinum 143-unit building. Rooftop garden, dog washroom, bike repair workshop, in-lobby market, sporting goods lending library. 1–4BR including live/work units.",
-        why:"Most original amenity concept in the corridor. Sporting goods lending library, rooftop garden, bike workshop. Community-first management." },
-      { id:"cl3", hood:"Clarendon", name:"Reserve at Clarendon Centre", addr:"3000 Washington Blvd, Arlington, VA 22201",
-        price2:"$3,590+", price2hi:"zillow", price3:"~$4,982", rating:4.1, metro:"3 min · Clarendon",
-        gym:"Great", gymNote:"High-rise fitness center + pool",
-        desc:"High-rise in the heart of Clarendon steps from Market Common dining strip. No deposit required. Good 3BR availability makes it notable for larger households.",
-        why:"No deposit is a real move-in advantage. Walking distance to the best restaurant strip in the corridor. 3BR availability." },
-      { id:"cl4", hood:"Clarendon", name:"Modera Clarendon", addr:"3415 Washington Blvd, Arlington, VA 22201",
-        price2:"$3,613+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"4 min · Virginia Sq / 5 min · Clarendon",
-        gym:"Medium", gymNote:"Fitness center + EV charging + LEED-certified eco-building",
-        desc:"Mill Creek Residential eco-forward building. LEED-focused design, EV charging, French-door fridges, high-gloss cabinets. Between Virginia Square and Clarendon, near GMU.",
-        why:"Eco-conscious building with genuine green credentials. Good price for the mid-corridor location." },
-      { id:"cl5", hood:"Clarendon", name:"vPoint", addr:"1210 N Highland St, Arlington, VA 22201",
-        price2:"$3,895+", price2hi:"zillow", price3:"N/A", rating:4.2, metro:"2 min · Clarendon",
-        gym:"Small", gymNote:"Fitness room + EV charging; no pool",
-        desc:"Boutique eco-friendly building at Clarendon Metro. Unique views of DC skyline and National Cathedral. Hardwood floors, granite counters, exposed ceilings. Walk score 96.",
-        why:"National Cathedral views are genuinely unique in the corridor. Boutique scale means fewer neighbors, more personal experience." },
-      // BETHESDA
-      { id:"bth1", hood:"Bethesda", name:"Hampden House", addr:"4700 Hampden Ln, Bethesda, MD 20814",
-        price2:"$4,409+", price2hi:"zillow", price3:"~$5,500", rating:4.5, metro:"5 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Rooftop terrace · fitness center · 24/7 concierge",
-        desc:"Art Deco-inspired grand building steps from Bethesda Row. Voluminous spaces, rooftop terrace, 24/7 concierge. Surrounded by best dining and shops in downtown Bethesda.",
-        why:"Most architecturally distinctive building on this list. Bethesda Row lifestyle — hundreds of restaurants and shops. Red Line to DC in 15 minutes." },
-      { id:"bth2", hood:"Bethesda", name:"The Charles", addr:"7342 Wisconsin Ave, Bethesda, MD 20814",
-        price2:"$4,912+", price2hi:"zillow", price3:"~$6,500+", rating:4.4, metro:"4 min · Bethesda (Red Line)",
-        gym:"Excellent", gymNote:"State-of-the-art fitness center · pool · rooftop",
-        desc:"Greystar-managed luxury tower on Wisconsin Ave. Premium finishes, state-of-the-art gym, rooftop pool. Close to NIH and Walter Reed.",
-        why:"Top-tier Bethesda luxury. Excellent management. Walkable to everything downtown Bethesda offers." },
-      { id:"bth3", hood:"Bethesda", name:"Gallery Bethesda I", addr:"4800 Auburn Ave, Bethesda, MD 20814",
-        price2:"$3,500+", price2hi:"zillow", price3:"~$5,200", rating:4.4, metro:"6 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Club-style 24-hr fitness center · sky lounge · rooftop",
-        desc:"LEED Gold-certified across two buildings. Sky lounge, rooftop terrace with entertainment kitchen. Timeless hardwood floors, chef-inspired kitchens. Walk score 97.",
-        why:"LEED Gold + walk score 97 = excellent urban sustainability credentials. Sky lounge and entertainment kitchen are genuine differentiators." },
-      { id:"bth4", hood:"Bethesda", name:"Upstairs at Bethesda Row", addr:"7131 Arlington Rd, Bethesda, MD 20814",
-        price2:"$3,296+", price2hi:"zillow", price3:"N/A", rating:4.5, metro:"8 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Well-equipped gym + hot tub + media room + concierge",
-        desc:"Above Bethesda Row's dining and retail strip. 24/7 concierge, hot tub, media room. Dozens of restaurants literally downstairs.",
-        why:"Restaurant lifestyle taken to the extreme — world-class dining is literally downstairs. Best for those who want to live above the action." },
-      { id:"bth5", hood:"Bethesda", name:"Cecil", addr:"8015 Old Georgetown Rd, Bethesda, MD 20814",
-        price2:"$4,331+", price2hi:"zillow", price3:"~$5,800", rating:4.3, metro:"7 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Resort-style pool · fitness center · rooftop",
-        desc:"Luxury community with resort-style pool, rooftop, and fitness center. Modern architecture, spacious floor plans.",
-        why:"Resort living in Bethesda. Strong 3BR availability. Well-regarded management and consistently positive resident reviews." },
-      { id:"bth6", hood:"Bethesda", name:"Flats 8300", addr:"8300 Wisconsin Ave, Bethesda, MD 20814",
-        price2:"$3,718+", price2hi:"zillow", price3:"~$5,200", rating:4.2, metro:"3 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Fitness center + pool + sundeck + proximity to NIH/Walter Reed",
-        desc:"Luxury mid-rise steps from Bethesda Metro. Spacious floor plans, pool, sundeck. Walking distance to Walter Reed and NIH.",
-        why:"Closest Bethesda building to the metro on this list. Excellent NIH/Walter Reed proximity. Great 3BR options." },
-      { id:"bth7", hood:"Bethesda", name:"The Metropolitan", addr:"7620 Old Georgetown Rd, Bethesda, MD 20814",
-        price2:"$2,670+", price2hi:"zillow", price3:"N/A", rating:4.1, metro:"4 min · Bethesda (Red Line)",
-        gym:"Medium", gymNote:"Fitness center; renovated amenities",
-        desc:"Mid-rise in buzzing downtown Bethesda steps from Metro and the restaurant scene. Floor-to-ceiling windows, grocery store access. Affordable entry point to downtown Bethesda.",
-        why:"Best value 2BR in downtown Bethesda. Steps from hundreds of restaurants." },
-      { id:"bth8", hood:"Bethesda", name:"7001 Arlington at Bethesda", addr:"7001 Arlington Rd, Bethesda, MD 20814",
-        price2:"$3,599+", price2hi:"zillow", price3:"N/A", rating:4.3, metro:"6 min · Bethesda (Red Line)",
-        gym:"Great", gymNote:"Fitness center · outdoor lounge · dog park + Capital Crescent Trail access",
-        desc:"Between downtown Bethesda and the Capital Crescent Trail. Sophisticated amenity areas, outdoor lounges. Private dog park. Trail access to Silver Spring or Georgetown.",
-        why:"Unique differentiator: Capital Crescent Trail at your doorstep. Bike or run to Georgetown directly." },
-    ];
+    // ─── BUILDING DATA (loaded from buildings.json) ────────────────────────────
+    // buildings.json lives in the same directory and is the single source of truth
+    // shared with the Playwright scraper
 
     // ─── CONSTANTS ────────────────────────────────────────────────────────────
     const HOODS     = ["All","Rosslyn","Courthouse","Virginia Square","Ballston","Clarendon","Bethesda"];
@@ -373,6 +192,7 @@
 
     // ─── APP ──────────────────────────────────────────────────────────────────
     function App() {
+      const [buildings, setBuildings] = useState([]);
       const [dbStatus,  setDbStatus]  = useState("loading");
       const [notes,     setNotes]     = useState({});
       const [saving,    setSaving]    = useState({});
@@ -382,9 +202,17 @@
       const [gymFilter, setGymFilter] = useState("All");
 
       useEffect(() => {
-        dbRead()
-          .then(data => { setNotes(data || {}); setDbStatus("ok"); })
-          .catch(err  => { console.error(err); setDbStatus("error"); });
+        // Load buildings.json and Firebase notes in parallel
+        Promise.all([
+          fetch('./buildings.json').then(r => r.json()),
+          dbRead(),
+        ])
+          .then(([bldgs, notes]) => {
+            setBuildings(bldgs);
+            setNotes(notes || {});
+            setDbStatus("ok");
+          })
+          .catch(err => { console.error(err); setDbStatus("error"); });
       }, []);
 
       const handleSave = async (id, note, score) => {
@@ -402,7 +230,7 @@
       };
 
       const filtered = useMemo(() => {
-        let list = BUILDINGS;
+        let list = buildings;
         if (hood !== "All") list = list.filter(b => b.hood === hood);
         if (gymFilter !== "All") list = list.filter(b => b.gym === gymFilter);
         if (search.trim()) {
@@ -455,7 +283,7 @@
                     Rosslyn → Clarendon + Bethesda
                   </h1>
                   <p style={{ margin:"4px 0 0", fontSize:13, color:"#94a3b8" }}>
-                    {BUILDINGS.length} buildings · tap to expand · notes sync across devices
+                    {buildings.length} buildings · tap to expand · notes sync across devices
                   </p>
                 </div>
                 <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:6, flexShrink:0 }}>
@@ -518,7 +346,7 @@
           {/* Cards */}
           <div style={{ maxWidth:680, margin:"0 auto", padding:"14px 14px 40px" }}>
             <div style={{ fontSize:12, color:"#94a3b8", marginBottom:12 }}>
-              Showing {filtered.length} of {BUILDINGS.length} buildings
+              Showing {filtered.length} of {buildings.length} buildings
               {dbStatus === "loading" && <span style={{ marginLeft:8, color:"#fbbf24" }}>· loading notes…</span>}
             </div>
             <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
