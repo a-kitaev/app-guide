@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arlington & Bethesda Apartments</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f8fafc; font-family: 'DM Sans', sans-serif; }
+    textarea { font-family: 'DM Sans', sans-serif; }
+    select, button, input { font-family: 'DM Sans', sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // ─── FIREBASE REST ────────────────────────────────────────────────────────
+    const DB = "https://i-destiny-476217-j5-default-rtdb.europe-west1.firebasedatabase.app/user_data";
+
+    async function dbRead() {
+      const res = await fetch(`${DB}.json`);
+      if (!res.ok) throw new Error(`Read failed: ${res.status}`);
+      return await res.json() || {};
+    }
+
+    async function dbWrite(id, payload) {
+      const res = await fetch(`${DB}/${id}.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`Write failed: ${res.status}`);
+      return await res.json();
+    }
+
+    // ─── BUILDING DATA ────────────────────────────────────────────────────────
+    const BUILDINGS = [
+      // ROSSLYN
+      { id:"r1", hood:"Rosslyn", name:"Central Place", addr:"1800 N Lynn St, Arlington, VA 22209",
+        price2:"$4,234", price2hi:"$4,549", price3:"$6,369", price3hi:"$8,377", rating:4.4, metro:"2 min · Rosslyn",
+        gym:"Great", gymNote:"Fitness center + resort pool sundeck",
+        desc:"31-story flagship directly above Rosslyn Metro. Floor-to-ceiling windows, 9-ft ceilings, quartz counters, 24/7 concierge. Resort pool, coworking suites.",
+        why:"Literally connected to the station — zero friction for DC commuters. Jaw-dropping Georgetown & Potomac views." },
+      { id:"r2", hood:"Rosslyn", name:"Cortland Rosslyn", addr:"1771 N Pierce St, Arlington, VA 22209",
+        price2:"$3,944", price2hi:"$4,625", price3:"$6,353", price3hi:"$6,353", rating:4.6, metro:"5 min · Rosslyn",
+        gym:"Excellent", gymNote:"2 massive gyms + rock climbing wall + yoga studio",
+        desc:"Brand-new twin towers. Dual rooftop pools with Potomac views, indoor spa, rock-climbing wall, poker room, Bosch appliances throughout.",
+        why:"Best all-around amenity stack in the entire corridor. Rock climbing + yoga + dual pools — genuinely unmatched. Consistently highest resident satisfaction." },
+      { id:"r3", hood:"Rosslyn", name:"Rosslyn Towers", addr:"1919 N Nash St, Arlington, VA 22209",
+        price2:"$3,595+", price2hi:"zillow", price3:"~$5,400", rating:4.2, metro:"7 min · Rosslyn",
+        gym:"Excellent", gymNote:"Boxing ring · TRX zone · Peloton · Precor cardio",
+        desc:"514-unit complex connecting to a full-service Hilton hotel. Panoramic DC views, balconies on select units, EV charging. World-class gym with a literal boxing ring.",
+        why:"Only building in the corridor with a boxing ring on-site. Hotel-level services incoming. Walk across Key Bridge to Georgetown." },
+      { id:"r4", hood:"Rosslyn", name:"Rosslyn Heights", addr:"1804 N Quinn St, Arlington, VA 22209",
+        price2:"$3,059+", price2hi:"zillow", price3:"N/A", rating:4.1, metro:"4 min · Rosslyn / 6 min · Courthouse",
+        gym:"Medium", gymNote:"Fitness center + pool + sundeck + grilling area",
+        desc:"Tree-lined mid-rise between Rosslyn and Courthouse. Larger-than-average floor plans, real wood-burning fireplaces, private balconies. More residential feel.",
+        why:"Best value for space in Rosslyn. Calmer neighborhood atmosphere while staying metro-connected between two stations." },
+      { id:"r5", hood:"Rosslyn", name:"Sedona | Slate", addr:"1510 Clarendon Blvd, Arlington, VA 22209",
+        price2:"$3,197+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"8 min · Rosslyn / 6 min · Courthouse",
+        gym:"Great", gymNote:"Pool · gym · rec room · concierge · EV charging",
+        desc:"Twin-building community (Sedona + Slate) between Rosslyn and Courthouse. Pool, gym, rec room, bike storage. 5-min walk to Safeway and Target.",
+        why:"Prime midpoint location. Walkable to grocery, Target, restaurants. Good amenities without top-tier pricing." },
+      { id:"r6", hood:"Rosslyn", name:"1800 Oak", addr:"1800 N Oak St, Arlington, VA 22209",
+        price2:"$3,314+", price2hi:"zillow", price3:"N/A", rating:4.5, metro:"5 min · Rosslyn",
+        gym:"Medium", gymNote:"Fitness center + pool + hot tub + courtyard garden",
+        desc:"Equity Residential mid-rise steps from Rosslyn Metro. Renovated units with granite counters, in-unit W/D. 24-hr concierge, pool, hot tub, courtyard.",
+        why:"9.9/10 on Zumper — best management ratings in North Rosslyn. More affordable than glass towers while staying very close to the metro." },
+      { id:"r7", hood:"Rosslyn", name:"The Crestmont", addr:"1301 N Rhodes St, Arlington, VA 22209",
+        price2:"~$2,800", price3:"~$3,500", rating:4.2, metro:"6 min · Rosslyn",
+        gym:"Small", gymNote:"Basic fitness room; pool on-site",
+        desc:"Pet-friendly community near Georgetown and I-66. 1-, 2-, and 3-BR floor plans in a quieter residential setting. Pool, garden, appointed parking.",
+        why:"Rare 3BR availability in Rosslyn at below-market pricing. Best for those who prefer a quieter, non-highrise atmosphere close to Georgetown." },
+      // COURTHOUSE
+      { id:"c1", hood:"Courthouse", name:"Avalon Courthouse Place", addr:"1320 N Veitch St, Arlington, VA 22201",
+        price2:"$3,459+", price2hi:"zillow", price3:"Limited", rating:4.0, metro:"3 min · Courthouse",
+        gym:"Great", gymNote:"Sports club · split-level pool · library · business center",
+        desc:"AvalonBay community steps from Courthouse Metro. Renovated units, private patios, walk-in closets, in-unit W/D. Split-level pool, sports club, and library.",
+        why:"Perfect blend of metro access and neighborhood calm. Most reliable large-operator management in the corridor." },
+      { id:"c2", hood:"Courthouse", name:"Courthouse Plaza", addr:"2250 Clarendon Blvd, Arlington, VA 22201",
+        price2:"$2,912+", price2hi:"zillow", price3:"N/A", rating:4.2, metro:"4 min · Courthouse",
+        gym:"Medium", gymNote:"Fitness center with DC skyline views",
+        desc:"Smoke-free mid-rise with granite counters, spectacular DC/Rosslyn views. Pet-friendly, walk score 96. Jogging trail access to Arlington Farmers Market.",
+        why:"Great DC views at a walkable location. Farmers Market walking distance is a genuine quality-of-life win." },
+      { id:"c3", hood:"Courthouse", name:"Meridian at Courthouse Commons", addr:"1401 N Taft St, Arlington, VA 22201",
+        price2:"$3,035+", price2hi:"zillow", price3:"N/A", rating:3.9, metro:"5 min · Courthouse",
+        gym:"Medium", gymNote:"Fitness center · basketball half-court · BBQ fire pit courtyard",
+        desc:"Renovated courtyard community with fire pits, car wash service, aerobics classes, basketball half court. Concierge, Nest thermostats.",
+        why:"Best value 2BR in the Courthouse zone. Lively community with active management events." },
+      { id:"c4", hood:"Courthouse", name:"The Palatine", addr:"1515 N Courthouse Rd, Arlington, VA 22201",
+        price2:"~$3,760", price3:"Limited", rating:4.1, metro:"4 min · Courthouse",
+        gym:"Great", gymNote:"Upscale fitness center + luxury finishes",
+        desc:"Boutique luxury building near Courthouse Metro. High-end finishes. Adjacent to Arlington Courthouse — very safe block. AMC cinema next door.",
+        why:"Boutique feel without mega-complex scale. Cinema literally next door. One of the safest blocks in the corridor." },
+      { id:"c5", hood:"Courthouse", name:"The Prime at Arlington Courthouse", addr:"1415 N Taft St, Arlington, VA 22201",
+        price2:"~$3,035", price3:"N/A", rating:4.0, metro:"6 min · Courthouse",
+        gym:"Great", gymNote:"Modern fitness center + pool + rooftop access",
+        desc:"Newer luxury community a short walk to Courthouse Metro. Pool, modern gym, rooftop access.",
+        why:"Strong management reputation. Walkable to Rosslyn nightlife and Clarendon dining. Quieter residential block." },
+      // VIRGINIA SQUARE
+      { id:"v1", hood:"Virginia Square", name:"Virginia Square Towers", addr:"3444 Fairfax Dr, Arlington, VA 22201",
+        price2:"$3,095+", price2hi:"zillow", price3:"~$4,200", rating:4.3, metro:"1 min · Virginia Square",
+        gym:"Great", gymNote:"Modern fitness center + pool + EV charging",
+        desc:"534-unit resort-style tower at the Virginia Square Metro entrance. Designer kitchens, luxury baths, pool, concierge, business center, EV charging. One of few 3BR options.",
+        why:"On the metro platform in under 2 minutes. Quieter neighborhood feel with genuine walkability. Good 3BR availability." },
+      { id:"v2", hood:"Virginia Square", name:"Virginia Square (901 N Nelson)", addr:"901 N Nelson St, Arlington, VA 22203",
+        price2:"$3,898+", price2hi:"zillow", price3:"Limited", rating:4.0, metro:"2 min · Virginia Square",
+        gym:"Medium", gymNote:"Fitness center · pool · dog park access",
+        desc:"Mid-rise steps from Virginia Square Metro. Boutique shopping, dining, music venues nearby. Dog park, biking/jogging trails, easy I-66 access.",
+        why:"Genuine neighborhood character. Quieter than Ballston while staying fully on the Orange/Silver line." },
+      { id:"v3", hood:"Virginia Square", name:"Latitude", addr:"3601 Fairfax Dr, Arlington, VA 22201",
+        price2:"$3,235+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"5 min · Virginia Sq / 6 min · Clarendon",
+        gym:"Medium", gymNote:"Fitness center + outdoor space + EV charging",
+        desc:"Modern mid-corridor community between Virginia Square and Clarendon. Balconies, in-unit W/D, EV charging. Frequently offers concession specials.",
+        why:"Equidistant between two metro stops. Good value for the corridor without the highest price premium." },
+      { id:"v4", hood:"Virginia Square", name:"1020 Apartments / Library Courts", addr:"1020 N Quincy St, Arlington, VA 22201",
+        price2:"~$2,000", price3:"N/A", rating:3.8, metro:"5 min · Virginia Sq / 6 min · Clarendon",
+        gym:"None", gymNote:"No gym; most green space per unit in Arlington",
+        desc:"Smaller mid-rise with the most green space per residence in Arlington. Budget-friendly option between two metro stations. Quiet, residential feel.",
+        why:"Best price in the corridor by a wide margin. Quiet and green close to both metros." },
+      // BALLSTON
+      { id:"b1", hood:"Ballston", name:"4040 Wilson", addr:"4040 Wilson Blvd, Arlington, VA 22203",
+        price2:"$4,195+", price2hi:"zillow", price3:"N/A", rating:4.4, metro:"3 min · Ballston",
+        gym:"Excellent", gymNote:"VIDA Fitness on-site — Virginia's first boutique gym",
+        desc:"Ballston's tallest building — all apartments start at the 11th floor. On-site VIDA Fitness and The Salt Line restaurant. Penthouse-level views from every unit. Bozzuto-managed.",
+        why:"VIDA Fitness on the ground floor is a serious differentiator. Every unit starts above 11 floors." },
+      { id:"b2", hood:"Ballston", name:"The View Ballston", addr:"4000 Wilson Blvd, Arlington, VA 22203",
+        price2:"~$3,575", price3:"N/A", rating:4.3, metro:"4 min · Ballston",
+        gym:"Great", gymNote:"Rooftop deck + 2 plunge pools + fire pit + panoramic DC views",
+        desc:"Luxury tower at Liberty Center with rooftop deck, two plunge pools, fire pit, 24-hr concierge. Walk score 92.",
+        why:"Outstanding community reputation — staff events, rooftop panorama, and warm management are consistent highlights." },
+      { id:"b3", hood:"Ballston", name:"J·Sol", addr:"900 N Quincy St, Arlington, VA 22203",
+        price2:"$3,855", price2hi:"$4,335", price3:"N/A", rating:4.2, metro:"3 min · Ballston",
+        gym:"Great", gymNote:"Rooftop infinity pool · sky lounge · fitness center",
+        desc:"22-story luxury tower. Rooftop infinity pool, sky lounge, co-working spaces, fitness center. Walk score 94. Concierge, pet-friendly. Sleek, design-forward interiors.",
+        why:"Rooftop infinity pool is genuinely distinctive. Strong boutique identity. Ballston Quarter literally steps away." },
+      { id:"b4", hood:"Ballston", name:"Ballston Place", addr:"901 N Pollard St, Arlington, VA 22203",
+        price2:"$3,195+", price2hi:"zillow", price3:"~$4,200", rating:4.1, metro:"4 min · Ballston / 6 min · Virginia Sq",
+        gym:"Medium", gymNote:"Fitness center + outdoor pool + fire pit courtyard",
+        desc:"383-unit 24-story tower, walk score 93. In-unit W/D, hardwood floors. Outdoor pool, fire pit courtyard, billiards clubroom, 24-hr concierge, indoor bike storage.",
+        why:"Best management reputation in the corridor. Strong community atmosphere. Equidistant between two metro stops." },
+      { id:"b5", hood:"Ballston", name:"Quincy Plaza", addr:"3900 Fairfax Dr, Arlington, VA 22203",
+        price2:"$3,250+", price2hi:"zillow", price3:"~$3,840", rating:4.2, metro:"4 min · Ballston / 5 min · Virginia Sq",
+        gym:"Great", gymNote:"Fitness center + pool + EV charging + outdoor space",
+        desc:"Mid-corridor tower between both metro stations. Pool, concierge, EV charging, business center, private balconies. One of the few buildings with consistent 3BR availability.",
+        why:"Best value 3BR in the Ballston-Virginia Square zone. Mid-corridor equidistance is a daily convenience win." },
+      { id:"b6", hood:"Ballston", name:"AVA Ballston Square", addr:"850 N Randolph St, Arlington, VA 22203",
+        price2:"$3,345", price2hi:"$3,845", price3:"N/A", rating:4.0, metro:"3 min · Ballston",
+        gym:"Medium", gymNote:"Modern fitness center; Furnished+ option with all utilities included",
+        desc:"AvalonBay twin-building community at Ballston Metro. Furnished+ option — furniture + all utilities + Wi-Fi included.",
+        why:"Most flexible lease setup in the corridor. Furnished+ is ideal for an August move — just show up and start living." },
+      // CLARENDON
+      { id:"cl1", hood:"Clarendon", name:"The Beacon Clarendon", addr:"1128 N Irving St, Arlington, VA 22201",
+        price2:"$3,837+", price2hi:"zillow", price3:"~$5,045", rating:4.5, metro:"4 min · Clarendon",
+        gym:"Great", gymNote:"Bozzuto-managed · wellness-focused amenities + rooftop",
+        desc:"Bozzuto-managed luxury building. Expansive floor plans, wellness-focused amenities, rooftop access. One of the highest-rated buildings in Arlington per resident reviews.",
+        why:"Highest Google rating in the list. Bozzuto management is consistently excellent. Good 3BR availability for Clarendon." },
+      { id:"cl2", hood:"Clarendon", name:"Ten at Clarendon", addr:"3110 10th St N, Arlington, VA 22201",
+        price2:"$3,475+", price2hi:"zillow", price3:"~$5,082", rating:4.3, metro:"5 min · Clarendon",
+        gym:"Great", gymNote:"State-of-the-art fitness + rooftop garden + bike workshop + dog wash",
+        desc:"LEED Platinum 143-unit building. Rooftop garden, dog washroom, bike repair workshop, in-lobby market, sporting goods lending library. 1–4BR including live/work units.",
+        why:"Most original amenity concept in the corridor. Sporting goods lending library, rooftop garden, bike workshop. Community-first management." },
+      { id:"cl3", hood:"Clarendon", name:"Reserve at Clarendon Centre", addr:"3000 Washington Blvd, Arlington, VA 22201",
+        price2:"$3,590+", price2hi:"zillow", price3:"~$4,982", rating:4.1, metro:"3 min · Clarendon",
+        gym:"Great", gymNote:"High-rise fitness center + pool",
+        desc:"High-rise in the heart of Clarendon steps from Market Common dining strip. No deposit required. Good 3BR availability makes it notable for larger households.",
+        why:"No deposit is a real move-in advantage. Walking distance to the best restaurant strip in the corridor. 3BR availability." },
+      { id:"cl4", hood:"Clarendon", name:"Modera Clarendon", addr:"3415 Washington Blvd, Arlington, VA 22201",
+        price2:"$3,613+", price2hi:"zillow", price3:"N/A", rating:4.0, metro:"4 min · Virginia Sq / 5 min · Clarendon",
+        gym:"Medium", gymNote:"Fitness center + EV charging + LEED-certified eco-building",
+        desc:"Mill Creek Residential eco-forward building. LEED-focused design, EV charging, French-door fridges, high-gloss cabinets. Between Virginia Square and Clarendon, near GMU.",
+        why:"Eco-conscious building with genuine green credentials. Good price for the mid-corridor location." },
+      { id:"cl5", hood:"Clarendon", name:"vPoint", addr:"1210 N Highland St, Arlington, VA 22201",
+        price2:"$3,895+", price2hi:"zillow", price3:"N/A", rating:4.2, metro:"2 min · Clarendon",
+        gym:"Small", gymNote:"Fitness room + EV charging; no pool",
+        desc:"Boutique eco-friendly building at Clarendon Metro. Unique views of DC skyline and National Cathedral. Hardwood floors, granite counters, exposed ceilings. Walk score 96.",
+        why:"National Cathedral views are genuinely unique in the corridor. Boutique scale means fewer neighbors, more personal experience." },
+      // BETHESDA
+      { id:"bth1", hood:"Bethesda", name:"Hampden House", addr:"4700 Hampden Ln, Bethesda, MD 20814",
+        price2:"$4,409+", price2hi:"zillow", price3:"~$5,500", rating:4.5, metro:"5 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Rooftop terrace · fitness center · 24/7 concierge",
+        desc:"Art Deco-inspired grand building steps from Bethesda Row. Voluminous spaces, rooftop terrace, 24/7 concierge. Surrounded by best dining and shops in downtown Bethesda.",
+        why:"Most architecturally distinctive building on this list. Bethesda Row lifestyle — hundreds of restaurants and shops. Red Line to DC in 15 minutes." },
+      { id:"bth2", hood:"Bethesda", name:"The Charles", addr:"7342 Wisconsin Ave, Bethesda, MD 20814",
+        price2:"$4,912+", price2hi:"zillow", price3:"~$6,500+", rating:4.4, metro:"4 min · Bethesda (Red Line)",
+        gym:"Excellent", gymNote:"State-of-the-art fitness center · pool · rooftop",
+        desc:"Greystar-managed luxury tower on Wisconsin Ave. Premium finishes, state-of-the-art gym, rooftop pool. Close to NIH and Walter Reed.",
+        why:"Top-tier Bethesda luxury. Excellent management. Walkable to everything downtown Bethesda offers." },
+      { id:"bth3", hood:"Bethesda", name:"Gallery Bethesda I", addr:"4800 Auburn Ave, Bethesda, MD 20814",
+        price2:"$3,500+", price2hi:"zillow", price3:"~$5,200", rating:4.4, metro:"6 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Club-style 24-hr fitness center · sky lounge · rooftop",
+        desc:"LEED Gold-certified across two buildings. Sky lounge, rooftop terrace with entertainment kitchen. Timeless hardwood floors, chef-inspired kitchens. Walk score 97.",
+        why:"LEED Gold + walk score 97 = excellent urban sustainability credentials. Sky lounge and entertainment kitchen are genuine differentiators." },
+      { id:"bth4", hood:"Bethesda", name:"Upstairs at Bethesda Row", addr:"7131 Arlington Rd, Bethesda, MD 20814",
+        price2:"$3,296+", price2hi:"zillow", price3:"N/A", rating:4.5, metro:"8 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Well-equipped gym + hot tub + media room + concierge",
+        desc:"Above Bethesda Row's dining and retail strip. 24/7 concierge, hot tub, media room. Dozens of restaurants literally downstairs.",
+        why:"Restaurant lifestyle taken to the extreme — world-class dining is literally downstairs. Best for those who want to live above the action." },
+      { id:"bth5", hood:"Bethesda", name:"Cecil", addr:"8015 Old Georgetown Rd, Bethesda, MD 20814",
+        price2:"$4,331+", price2hi:"zillow", price3:"~$5,800", rating:4.3, metro:"7 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Resort-style pool · fitness center · rooftop",
+        desc:"Luxury community with resort-style pool, rooftop, and fitness center. Modern architecture, spacious floor plans.",
+        why:"Resort living in Bethesda. Strong 3BR availability. Well-regarded management and consistently positive resident reviews." },
+      { id:"bth6", hood:"Bethesda", name:"Flats 8300", addr:"8300 Wisconsin Ave, Bethesda, MD 20814",
+        price2:"$3,718+", price2hi:"zillow", price3:"~$5,200", rating:4.2, metro:"3 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Fitness center + pool + sundeck + proximity to NIH/Walter Reed",
+        desc:"Luxury mid-rise steps from Bethesda Metro. Spacious floor plans, pool, sundeck. Walking distance to Walter Reed and NIH.",
+        why:"Closest Bethesda building to the metro on this list. Excellent NIH/Walter Reed proximity. Great 3BR options." },
+      { id:"bth7", hood:"Bethesda", name:"The Metropolitan", addr:"7620 Old Georgetown Rd, Bethesda, MD 20814",
+        price2:"$2,670+", price2hi:"zillow", price3:"N/A", rating:4.1, metro:"4 min · Bethesda (Red Line)",
+        gym:"Medium", gymNote:"Fitness center; renovated amenities",
+        desc:"Mid-rise in buzzing downtown Bethesda steps from Metro and the restaurant scene. Floor-to-ceiling windows, grocery store access. Affordable entry point to downtown Bethesda.",
+        why:"Best value 2BR in downtown Bethesda. Steps from hundreds of restaurants." },
+      { id:"bth8", hood:"Bethesda", name:"7001 Arlington at Bethesda", addr:"7001 Arlington Rd, Bethesda, MD 20814",
+        price2:"$3,599+", price2hi:"zillow", price3:"N/A", rating:4.3, metro:"6 min · Bethesda (Red Line)",
+        gym:"Great", gymNote:"Fitness center · outdoor lounge · dog park + Capital Crescent Trail access",
+        desc:"Between downtown Bethesda and the Capital Crescent Trail. Sophisticated amenity areas, outdoor lounges. Private dog park. Trail access to Silver Spring or Georgetown.",
+        why:"Unique differentiator: Capital Crescent Trail at your doorstep. Bike or run to Georgetown directly." },
+    ];
+
+    // ─── CONSTANTS ────────────────────────────────────────────────────────────
+    const HOODS     = ["All","Rosslyn","Courthouse","Virginia Square","Ballston","Clarendon","Bethesda"];
+    const GYM_ORDER = { Excellent:4, Great:3, Medium:2, Small:1, None:0 };
+    const GYM_COLORS = {
+      Excellent:{ bg:"#ede9fe", text:"#5b21b6" }, Great:{ bg:"#dbeafe", text:"#1d4ed8" },
+      Medium:{ bg:"#d1fae5", text:"#065f46" },    Small:{ bg:"#fef9c3", text:"#854d0e" },
+      None:{ bg:"#f1f5f9", text:"#475569" },
+    };
+    const HOOD_COLORS = {
+      Rosslyn:{ bg:"#dbeafe", text:"#1e40af" }, Courthouse:"#7c3aed",
+      "Virginia Square":{ bg:"#d1fae5", text:"#065f46" }, Ballston:{ bg:"#fef3c7", text:"#92400e" },
+      Clarendon:{ bg:"#fce7f3", text:"#9d174d" }, Bethesda:{ bg:"#e0e7ff", text:"#3730a3" },
+    };
+    const hoodStyle = h => {
+      const c = HOOD_COLORS[h];
+      if (!c) return { background:"#f1f5f9", color:"#334155" };
+      return typeof c === "string" ? { background:"#ede9fe", color:c } : { background:c.bg, color:c.text };
+    };
+    const mapsUrl  = addr => `https://maps.apple.com/?q=${encodeURIComponent(addr)}`;
+    const getPrice = p    => parseFloat((p||"0").replace(/[^0-9.]/g,"")) || 0;
+
+    // ─── STAR RATING ──────────────────────────────────────────────────────────
+    function StarRating({ value, onChange }) {
+      return (
+        <div style={{ display:"flex", gap:3, alignItems:"center" }}>
+          {[...Array(10)].map((_,i) => (
+            <button key={i} onClick={() => onChange(i+1 === value ? 0 : i+1)}
+              style={{ background:"none", border:"none", cursor:"pointer", padding:0,
+                       fontSize:20, color: i < value ? "#f59e0b" : "#cbd5e1", lineHeight:1 }}>★</button>
+          ))}
+          {value > 0 && <span style={{ fontSize:13, fontWeight:700, color:"#f59e0b", marginLeft:4 }}>{value}/10</span>}
+        </div>
+      );
+    }
+
+    // ─── CARD ─────────────────────────────────────────────────────────────────
+    function Card({ b, note, score, saving, onSave }) {
+      const [open,      setOpen]      = useState(false);
+      const [editNote,  setEditNote]  = useState(note  || "");
+      const [editScore, setEditScore] = useState(score || 0);
+      const [dirty,     setDirty]     = useState(false);
+      const gymC = GYM_COLORS[b.gym] || GYM_COLORS.None;
+
+      useEffect(() => {
+        if (!dirty) { setEditNote(note || ""); setEditScore(score || 0); }
+      }, [note, score]);
+
+      const priceBadge = hi => {
+        if (hi === "zillow")
+          return <span style={{fontSize:10,background:"#dbeafe",color:"#1d4ed8",padding:"2px 6px",borderRadius:4,fontWeight:600}}>✓ Zillow</span>;
+        if (hi)
+          return <span style={{fontSize:10,background:"#dcfce7",color:"#15803d",padding:"2px 6px",borderRadius:4,fontWeight:600}}>✓ official</span>;
+        return <span style={{fontSize:10,background:"#fef9c3",color:"#92400e",padding:"2px 6px",borderRadius:4}}>est.</span>;
+      };
+
+      const priceDisplay = (lo, hi) => (hi && hi !== "zillow") ? `${lo} – ${hi}` : lo;
+
+      return (
+        <div style={{ background:"#fff", borderRadius:16, border:"1px solid #e2e8f0",
+                      overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,.06)" }}>
+          {/* Header */}
+          <div onClick={() => setOpen(!open)}
+               style={{ padding:"14px 16px 12px", cursor:"pointer", userSelect:"none" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8 }}>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:4 }}>
+                  <span style={{ fontSize:11, fontWeight:600, padding:"2px 8px", borderRadius:20, ...hoodStyle(b.hood) }}>{b.hood}</span>
+                  {score > 0 && <span style={{ fontSize:11, fontWeight:700, padding:"2px 7px", borderRadius:20, background:"#fef3c7", color:"#b45309" }}>My score: {score}/10</span>}
+                </div>
+                <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:"#0f172a", lineHeight:1.3 }}>{b.name}</h3>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+                <span style={{ fontSize:13, color:"#f59e0b", fontWeight:700 }}>★ {b.rating}</span>
+                <span style={{ fontSize:20, color:"#94a3b8", display:"inline-block",
+                               transform: open ? "rotate(90deg)" : "rotate(0deg)", transition:"transform .2s" }}>›</span>
+              </div>
+            </div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:"6px 14px", marginTop:6 }}>
+              <span style={{ fontSize:12, color:"#64748b" }}>🚇 {b.metro}</span>
+              <span style={{ fontSize:11, fontWeight:600, padding:"2px 8px", borderRadius:20, background:gymC.bg, color:gymC.text }}>{b.gym} gym</span>
+            </div>
+            <div style={{ display:"flex", gap:10, marginTop:10 }}>
+              {[["2BR", b.price2, b.price2hi], ["3BR", b.price3, b.price3hi]].map(([lbl, lo, hi]) => (
+                <div key={lbl} style={{ flex:1, background:"#f8fafc", borderRadius:10, padding:"8px 10px" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:4, marginBottom:3 }}>
+                    <span style={{ fontSize:10, color:"#94a3b8", textTransform:"uppercase", letterSpacing:".05em" }}>{lbl}</span>
+                    {priceBadge(hi)}
+                  </div>
+                  <div style={{ fontSize:15, fontWeight:700, color:"#0f172a" }}>{priceDisplay(lo, hi)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Expanded */}
+          {open && (
+            <div style={{ borderTop:"1px solid #f1f5f9", padding:"12px 16px 16px" }}>
+              <a href={mapsUrl(b.addr)} style={{
+                display:"flex", alignItems:"center", gap:8, padding:"10px 12px",
+                background:"#f0f9ff", borderRadius:10, marginBottom:12,
+                textDecoration:"none", color:"#0369a1", fontSize:13, fontWeight:500,
+                border:"1px solid #bae6fd"
+              }}>
+                <span>📍</span><span style={{ flex:1 }}>{b.addr}</span>
+                <span style={{ fontSize:12, color:"#7dd3fc" }}>Open Maps →</span>
+              </a>
+              <div style={{ padding:"8px 12px", borderRadius:10, marginBottom:12, background:gymC.bg, border:`1px solid ${gymC.text}30` }}>
+                <span style={{ fontSize:12, fontWeight:700, color:gymC.text }}>🏋️ {b.gym} gym: </span>
+                <span style={{ fontSize:12, color:gymC.text }}>{b.gymNote}</span>
+              </div>
+              <p style={{ fontSize:13, color:"#475569", lineHeight:1.65, margin:"0 0 10px" }}>{b.desc}</p>
+              <div style={{ borderLeft:"3px solid #3b82f6", paddingLeft:10, marginBottom:16, fontSize:13, color:"#1e40af", lineHeight:1.65 }}>
+                <strong>Why live here:</strong> {b.why}
+              </div>
+              {/* Notes */}
+              <div style={{ background:"#fffbeb", borderRadius:12, padding:"14px", border:"1px solid #fde68a" }}>
+                <div style={{ fontSize:12, fontWeight:700, color:"#92400e", marginBottom:8 }}>📝 My notes</div>
+                <textarea value={editNote}
+                  onChange={e => { setEditNote(e.target.value); setDirty(true); }}
+                  placeholder="Add notes after your visit…" rows={3}
+                  style={{ width:"100%", padding:"8px 10px", borderRadius:8, border:"1px solid #fcd34d",
+                           fontSize:13, color:"#1c1917", background:"#fff", resize:"vertical",
+                           boxSizing:"border-box", lineHeight:1.5 }} />
+                <div style={{ marginTop:12, marginBottom:8 }}>
+                  <div style={{ fontSize:12, fontWeight:700, color:"#92400e", marginBottom:8 }}>My score</div>
+                  <StarRating value={editScore} onChange={v => { setEditScore(v); setDirty(true); }} />
+                </div>
+                {dirty && (
+                  <button onClick={() => { onSave(b.id, editNote, editScore); setDirty(false); }}
+                    style={{ marginTop:10, padding:"10px 18px",
+                             background: saving ? "#fbbf24" : "#f59e0b",
+                             color:"#fff", border:"none", borderRadius:8, fontSize:14,
+                             fontWeight:700, cursor: saving ? "default" : "pointer", width:"100%" }}>
+                    {saving ? "Saving…" : "Save notes & score"}
+                  </button>
+                )}
+                {!dirty && (note || score > 0) && (
+                  <div style={{ fontSize:11, color:"#a16207", marginTop:8 }}>✓ Synced to Firebase</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ─── APP ──────────────────────────────────────────────────────────────────
+    function App() {
+      const [dbStatus,  setDbStatus]  = useState("loading");
+      const [notes,     setNotes]     = useState({});
+      const [saving,    setSaving]    = useState({});
+      const [hood,      setHood]      = useState("All");
+      const [sort,      setSort]      = useState("default");
+      const [search,    setSearch]    = useState("");
+      const [gymFilter, setGymFilter] = useState("All");
+
+      useEffect(() => {
+        dbRead()
+          .then(data => { setNotes(data || {}); setDbStatus("ok"); })
+          .catch(err  => { console.error(err); setDbStatus("error"); });
+      }, []);
+
+      const handleSave = async (id, note, score) => {
+        setNotes(n => ({ ...n, [id]: { note, score, updated: Date.now() } }));
+        setSaving(s => ({ ...s, [id]: true }));
+        try {
+          await dbWrite(id, { note, score, updated: Date.now() });
+          setDbStatus("ok");
+        } catch (err) {
+          console.error("Save failed:", err);
+          setDbStatus("error");
+        } finally {
+          setSaving(s => ({ ...s, [id]: false }));
+        }
+      };
+
+      const filtered = useMemo(() => {
+        let list = BUILDINGS;
+        if (hood !== "All") list = list.filter(b => b.hood === hood);
+        if (gymFilter !== "All") list = list.filter(b => b.gym === gymFilter);
+        if (search.trim()) {
+          const q = search.toLowerCase();
+          list = list.filter(b =>
+            b.name.toLowerCase().includes(q) ||
+            b.hood.toLowerCase().includes(q) ||
+            b.desc.toLowerCase().includes(q)
+          );
+        }
+        const scored = list.map(b => ({ ...b, myScore: notes[b.id]?.score || 0 }));
+        if (sort === "price-asc")  scored.sort((a,b) => getPrice(a.price2) - getPrice(b.price2));
+        if (sort === "price-desc") scored.sort((a,b) => getPrice(b.price2) - getPrice(a.price2));
+        if (sort === "rating")     scored.sort((a,b) => b.rating - a.rating);
+        if (sort === "metro")      scored.sort((a,b) => parseInt(a.metro) - parseInt(b.metro));
+        if (sort === "gym")        scored.sort((a,b) => (GYM_ORDER[b.gym]||0) - (GYM_ORDER[a.gym]||0));
+        if (sort === "my-score")   scored.sort((a,b) => b.myScore - a.myScore);
+        return scored;
+      }, [hood, sort, search, gymFilter, notes]);
+
+      const visitedCount = Object.values(notes).filter(n => n.score > 0 || n.note).length;
+
+      if (dbStatus === "error") return (
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+                      minHeight:"100vh", background:"#fff1f2", gap:16, padding:24, textAlign:"center" }}>
+          <div style={{ fontSize:48 }}>⚠️</div>
+          <div style={{ fontSize:18, color:"#be123c", fontWeight:700 }}>Firebase connection failed</div>
+          <div style={{ fontSize:14, color:"#64748b", maxWidth:320, lineHeight:1.6 }}>
+            Set database rules to <code style={{background:"#f1f5f9",padding:"2px 6px",borderRadius:4}}>".read": true, ".write": true</code> in Firebase console.
+          </div>
+          <button onClick={() => { setDbStatus("loading"); dbRead().then(d => { setNotes(d||{}); setDbStatus("ok"); }).catch(() => setDbStatus("error")); }}
+            style={{ padding:"12px 28px", background:"#be123c", color:"#fff", border:"none",
+                     borderRadius:10, cursor:"pointer", fontSize:15, fontWeight:700 }}>
+            Retry
+          </button>
+        </div>
+      );
+
+      return (
+        <div style={{ minHeight:"100vh", background:"#f8fafc" }}>
+          {/* Header */}
+          <div style={{ background:"linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)", padding:"20px 16px 16px", color:"#fff" }}>
+            <div style={{ maxWidth:680, margin:"0 auto" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                <div>
+                  <div style={{ fontSize:11, letterSpacing:".15em", textTransform:"uppercase", color:"#7dd3fc", marginBottom:4 }}>
+                    Apartment Research · August 2026
+                  </div>
+                  <h1 style={{ margin:0, fontSize:22, fontWeight:700, lineHeight:1.2 }}>
+                    Rosslyn → Clarendon + Bethesda
+                  </h1>
+                  <p style={{ margin:"4px 0 0", fontSize:13, color:"#94a3b8" }}>
+                    {BUILDINGS.length} buildings · tap to expand · notes sync across devices
+                  </p>
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:6, marginTop:6, flexShrink:0 }}>
+                  <div style={{ width:9, height:9, borderRadius:"50%",
+                                background: dbStatus==="ok" ? "#4ade80" : dbStatus==="loading" ? "#fbbf24" : "#f87171",
+                                boxShadow: `0 0 7px ${dbStatus==="ok" ? "#4ade80" : dbStatus==="loading" ? "#fbbf24" : "#f87171"}` }} />
+                  <span style={{ fontSize:11, color:"#94a3b8" }}>
+                    {dbStatus==="ok" ? "Firebase live" : dbStatus==="loading" ? "Syncing…" : "Offline"}
+                  </span>
+                </div>
+              </div>
+              {visitedCount > 0 && (
+                <div style={{ marginTop:10, background:"rgba(245,158,11,.15)", border:"1px solid rgba(245,158,11,.4)",
+                              borderRadius:10, padding:"6px 12px", fontSize:12, color:"#fcd34d", display:"inline-block" }}>
+                  ★ You've rated {visitedCount} building{visitedCount !== 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Sticky controls */}
+          <div style={{ background:"#fff", borderBottom:"1px solid #e2e8f0", padding:"12px 16px", position:"sticky", top:0, zIndex:50 }}>
+            <div style={{ maxWidth:680, margin:"0 auto" }}>
+              <input value={search} onChange={e => setSearch(e.target.value)}
+                placeholder="🔍 Search buildings…"
+                style={{ width:"100%", padding:"10px 14px", borderRadius:10, border:"1px solid #e2e8f0",
+                         fontSize:14, color:"#0f172a", background:"#f8fafc", boxSizing:"border-box", marginBottom:10 }} />
+              <div style={{ display:"flex", gap:6, overflowX:"auto", paddingBottom:4, marginBottom:8 }}>
+                {HOODS.map(h => (
+                  <button key={h} onClick={() => setHood(h)}
+                    style={{ padding:"7px 14px", borderRadius:20, border:"1px solid #e2e8f0",
+                             background: hood===h ? "#0f172a" : "#fff", color: hood===h ? "#fff" : "#475569",
+                             fontSize:12, fontWeight:600, cursor:"pointer", whiteSpace:"nowrap" }}>{h}</button>
+                ))}
+              </div>
+              <div style={{ display:"flex", gap:8 }}>
+                <select value={sort} onChange={e => setSort(e.target.value)}
+                  style={{ flex:1, padding:"9px 10px", borderRadius:8, border:"1px solid #e2e8f0", fontSize:12, color:"#0f172a", background:"#f8fafc" }}>
+                  <option value="default">Sort: neighborhood</option>
+                  <option value="my-score">Sort: my score ↓</option>
+                  <option value="rating">Sort: Google rating ↓</option>
+                  <option value="price-asc">Sort: 2BR price ↑</option>
+                  <option value="price-desc">Sort: 2BR price ↓</option>
+                  <option value="gym">Sort: gym quality ↓</option>
+                  <option value="metro">Sort: metro distance ↑</option>
+                </select>
+                <select value={gymFilter} onChange={e => setGymFilter(e.target.value)}
+                  style={{ flex:1, padding:"9px 10px", borderRadius:8, border:"1px solid #e2e8f0", fontSize:12, color:"#0f172a", background:"#f8fafc" }}>
+                  <option value="All">All gym levels</option>
+                  <option value="Excellent">Excellent</option>
+                  <option value="Great">Great</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Small">Small</option>
+                  <option value="None">None</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div style={{ maxWidth:680, margin:"0 auto", padding:"14px 14px 40px" }}>
+            <div style={{ fontSize:12, color:"#94a3b8", marginBottom:12 }}>
+              Showing {filtered.length} of {BUILDINGS.length} buildings
+              {dbStatus === "loading" && <span style={{ marginLeft:8, color:"#fbbf24" }}>· loading notes…</span>}
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+              {filtered.map(b => (
+                <Card key={b.id} b={b}
+                  note={notes[b.id]?.note || ""}
+                  score={notes[b.id]?.score || 0}
+                  saving={!!saving[b.id]}
+                  onSave={handleSave} />
+              ))}
+            </div>
+            {filtered.length === 0 && (
+              <div style={{ textAlign:"center", padding:"40px 20px", color:"#94a3b8" }}>
+                <div style={{ fontSize:40, marginBottom:8 }}>🏙️</div>
+                <div style={{ fontSize:15, fontWeight:600 }}>No buildings match your filters</div>
+              </div>
+            )}
+            <div style={{ marginTop:32, padding:"14px 16px", background:"#fff", borderRadius:12, border:"1px solid #e2e8f0", fontSize:11, color:"#94a3b8", lineHeight:1.7 }}>
+              <strong style={{ color:"#64748b" }}>Pricing (May 2026):</strong>&nbsp;
+              <span style={{background:"#dcfce7",color:"#15803d",padding:"1px 6px",borderRadius:4,fontWeight:600}}>✓ official</span> from building website &nbsp;
+              <span style={{background:"#dbeafe",color:"#1d4ed8",padding:"1px 6px",borderRadius:4,fontWeight:600}}>✓ Zillow</span> live starting price &nbsp;
+              <span style={{background:"#fef9c3",color:"#92400e",padding:"1px 6px",borderRadius:4}}>est.</span> estimate only.
+              Higher floors/views add $200–600. Bethesda Red Line adds ~15 min to DC.
+              Notes sync via Firebase — shared across all your devices.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
