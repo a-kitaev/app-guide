@@ -1,0 +1,30 @@
+{
+  "central-place": {
+    "id": "central-place",
+    "name": "Central Place",
+    "addr": "1800 N Lynn St Arlington VA",
+    "url": "https://www.zillow.com/apartments/tucson-az/album-marana-55+-active-adult-apartment-homes/CkCNWX/",
+    "zillow_name": "Album Marana - 55+ Active Adult Apartment Homes"
+  },
+  "cortland-rosslyn": {
+    "id": "cortland-rosslyn",
+    "name": "Cortland Rosslyn",
+    "addr": "1771 N Pierce St Arlington VA",
+    "url": null,
+    "error": "not found"
+  },
+  "rosslyn-towers": {
+    "id": "rosslyn-towers",
+    "name": "Rosslyn Towers",
+    "addr": "1919 N Nash St Arlington VA",
+    "url": null,
+    "error": "not found"
+  },
+  "rosslyn-heights": {
+    "id": "rosslyn-heights",
+    "name": "Rosslyn Heights",
+    "addr": "1804 N Quinn St Arlington VA",
+    "url": null,
+    "error": "not found"
+  }
+}
