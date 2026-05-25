@@ -3,8 +3,652 @@
     "id": "b3",
     "name": "J·Sol",
     "official_url": "https://j-solapartments.com/floorplans/",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-25T22:30:13.536Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2671,
+        "max": 3096,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3433,
+        "max": 4364,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3433,
+    "price2_max": 4364,
+    "price2_plans": []
+  },
+  "bth3": {
+    "id": "bth3",
+    "name": "Gallery Bethesda I",
+    "official_url": "https://www.gallerybethesda1.com/floorplans/",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-25T22:32:16.525Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2320,
+        "max": 2900,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3630,
+        "max": 4300,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3630,
+    "price2_max": 4300,
+    "price2_plans": []
+  },
+  "cl5": {
+    "id": "cl5",
+    "name": "vPoint",
+    "official_url": "https://www.vpointapts.com/Floor-Plans.aspx",
+    "scraper_type": "realpage",
+    "scraped_at": "2026-05-25T22:31:33.520Z",
+    "all_beds": {
+      "1BR": {
+        "min": 1499,
+        "max": 2025,
+        "plans": []
+      },
+      "2BR": {
+        "min": 2295,
+        "max": 2931,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 2295,
+    "price2_max": 2931,
+    "price2_plans": []
+  },
+  "r1": {
+    "id": "r1",
+    "name": "Central Place",
+    "official_url": "https://www.centralplace.com/floorplans",
+    "scraper_type": "rentcafe",
+    "scraped_at": "2026-05-25T22:26:43.436Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2673,
+        "max": 4518,
+        "plans": []
+      },
+      "2BR": {
+        "min": 4417,
+        "max": 8244,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4417,
+    "price2_max": 8244,
+    "price2_plans": []
+  },
+  "r2": {
+    "id": "r2",
+    "name": "Cortland Rosslyn",
+    "official_url": "https://cortland.com/apartments/cortland-rosslyn/floorplans/",
+    "scraper_type": "cortland",
+    "scraped_at": "2026-05-25T22:26:50.952Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2638,
+        "max": 2638,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3944,
+        "max": 3944,
+        "plans": []
+      },
+      "3BR": {
+        "min": 6353,
+        "max": 6353,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3944,
+    "price2_max": 3944,
+    "price2_plans": [],
+    "price3_min": 6353,
+    "price3_max": 6353,
+    "price3_plans": []
+  },
+  "r3": {
+    "id": "r3",
+    "name": "Rosslyn Towers",
+    "official_url": "https://www.rentdittmar.com/apartment-communities/rosslyn-towers/floor-plans",
+    "scraper_type": "dittmar",
+    "scraped_at": "2026-05-25T22:26:57.822Z",
+    "error": "Dittmar iframe blocked — try Zillow fallback for these buildings"
+  },
+  "r4": {
+    "id": "r4",
+    "name": "Rosslyn Heights",
+    "official_url": "https://www.rosslynheights.com/floorplans",
+    "scraper_type": "rentcafe",
+    "scraped_at": "2026-05-25T22:27:10.858Z",
+    "error": "no RentCafe floor plan data found"
+  },
+  "r5": {
+    "id": "r5",
+    "name": "Sedona | Slate",
+    "official_url": "https://www.sedona-slate.com/floor-plans/",
+    "scraper_type": "bozzuto",
+    "scraped_at": "2026-05-25T22:27:26.601Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2553,
+        "max": 2928,
+        "plans": []
+      }
+    },
+    "source": "official_site"
+  },
+  "r6": {
+    "id": "r6",
+    "name": "1800 Oak",
+    "official_url": "https://www.equityapartments.com/arlington/rosslyn/1800-oak-apartments",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:27:37.228Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2512,
+        "max": 2558,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3304,
+        "max": 3520,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3304,
+    "price2_max": 3520,
+    "price2_plans": []
+  },
+  "c1": {
+    "id": "c1",
+    "name": "Avalon Courthouse Place",
+    "official_url": "https://www.avaloncommunities.com/virginia/arlington-apartments/avalon-courthouse-place/",
+    "scraper_type": "avalon",
+    "scraped_at": "2026-05-25T22:27:53.523Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2374,
+        "max": 2374,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3494,
+        "max": 3494,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3494,
+    "price2_max": 3494,
+    "price2_plans": []
+  },
+  "c2": {
+    "id": "c2",
+    "name": "Courthouse Plaza",
+    "official_url": "https://www.equityapartments.com/arlington/courthouse/courthouse-plaza-apartments##unit-availability-tile",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:28:03.740Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2327,
+        "max": 2413,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3470,
+        "max": 3948,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3470,
+    "price2_max": 3948,
+    "price2_plans": []
+  },
+  "c4": {
+    "id": "c4",
+    "name": "The Palatine",
+    "official_url": "https://www.palatineapts.com/floorplans",
+    "scraper_type": "bozzuto",
+    "scraped_at": "2026-05-25T22:28:31.167Z",
+    "error": "no Bozzuto floor plan data found"
+  },
+  "c5": {
+    "id": "c5",
+    "name": "The Prime at Arlington Courthouse",
+    "official_url": "https://www.equityapartments.com/arlington/courthouse/the-prime-at-arlington-courthouse-apartments##bedroom-type-section-2",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:28:44.370Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2327,
+        "max": 2512,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3470,
+        "max": 3520,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3470,
+    "price2_max": 3520,
+    "price2_plans": []
+  },
+  "v1": {
+    "id": "v1",
+    "name": "Virginia Square Towers",
+    "official_url": "https://www.rentdittmar.com/apartment-communities/virginia-square-towers/floor-plans",
+    "scraper_type": "dittmar",
+    "scraped_at": "2026-05-25T22:28:53.912Z",
+    "error": "Dittmar iframe blocked — try Zillow fallback for these buildings"
+  },
+  "v2": {
+    "id": "v2",
+    "name": "Virginia Square (901 N Nelson)",
+    "official_url": "https://www.equityapartments.com/arlington/virginia-square/virginia-square-apartments##unit-availability-tile",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:29:02.838Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2487,
+        "max": 2729,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3856,
+        "max": 3903,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3856,
+    "price2_max": 3903,
+    "price2_plans": []
+  },
+  "v3": {
+    "id": "v3",
+    "name": "Latitude",
+    "official_url": "https://www.livewithlatitude.com/lease-now",
+    "scraper_type": "nestio",
+    "scraped_at": "2026-05-25T22:29:13.842Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2471,
+        "max": 3666,
+        "plans": []
+      },
+      "2BR": {
+        "min": 4341,
+        "max": 4466,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4341,
+    "price2_max": 4466,
+    "price2_plans": []
+  },
+  "b1": {
+    "id": "b1",
+    "name": "4040 Wilson",
+    "official_url": "https://www.4040wilson.com/floor-plans/",
+    "scraper_type": "bozzuto",
+    "scraped_at": "2026-05-25T22:29:35.650Z",
+    "all_beds": {
+      "2BR": {
+        "min": 4195,
+        "max": 4546,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4195,
+    "price2_max": 4546,
+    "price2_plans": []
+  },
+  "b2": {
+    "id": "b2",
+    "name": "The View Ballston",
+    "official_url": "https://www.theviewapartments.com/floor-plans",
+    "scraper_type": "bozzuto",
+    "scraped_at": "2026-05-25T22:29:59.889Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2538,
+        "max": 3696,
+        "plans": []
+      },
+      "2BR": {
+        "min": 4476,
+        "max": 4620,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4476,
+    "price2_max": 4620,
+    "price2_plans": []
+  },
+  "b4": {
+    "id": "b4",
+    "name": "Ballston Place",
+    "official_url": "https://www.akelius-properties.us/ballston-place/floorplans",
+    "scraper_type": "rentcafe",
+    "scraped_at": "2026-05-25T22:30:22.871Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2380,
+        "max": 3010,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3750,
+        "max": 3750,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3750,
+    "price2_max": 3750,
+    "price2_plans": []
+  },
+  "b5": {
+    "id": "b5",
+    "name": "Quincy Plaza",
+    "official_url": "https://www.rentqp.com/floor-plans",
+    "scraper_type": "dittmar",
+    "scraped_at": "2026-05-25T22:30:31.424Z",
+    "error": "Dittmar iframe blocked — try Zillow fallback for these buildings"
+  },
+  "b6": {
+    "id": "b6",
+    "name": "AVA Ballston Square",
+    "official_url": "https://www.avaloncommunities.com/virginia/arlington-apartments/ava-ballston-square/",
+    "scraper_type": "avalon",
+    "scraped_at": "2026-05-25T22:30:40.412Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2446,
+        "max": 2446,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3288,
+        "max": 3288,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3288,
+    "price2_max": 3288,
+    "price2_plans": []
+  },
+  "cl1": {
+    "id": "cl1",
+    "name": "The Beacon Clarendon",
+    "official_url": "https://www.beaconarlington.com/floorplans",
+    "scraper_type": "bozzuto",
+    "scraped_at": "2026-05-25T22:30:57.550Z",
+    "error": "no Bozzuto floor plan data found"
+  },
+  "cl3": {
+    "id": "cl3",
+    "name": "Reserve at Clarendon Centre",
+    "official_url": "https://www.equityapartments.com/arlington/clarendon/the-reserve-at-clarendon-centre-apartments##unit-availability-tile",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:31:07.940Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2413,
+        "max": 2824,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3948,
+        "max": 4251,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3948,
+    "price2_max": 4251,
+    "price2_plans": []
+  },
+  "cl4": {
+    "id": "cl4",
+    "name": "Modera Clarendon",
+    "official_url": "https://www.moderaclarendon.com/arlington-va-apartments/modera-clarendon/floor-plans/",
+    "scraper_type": "millcreek",
+    "scraped_at": "2026-05-25T22:31:22.894Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2700,
+        "max": 3223,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3599,
+        "max": 4592,
+        "plans": []
+      },
+      "3BR": {
+        "min": 5842,
+        "max": 5842,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3599,
+    "price2_max": 4592,
+    "price2_plans": [],
+    "price3_min": 5842,
+    "price3_max": 5842,
+    "price3_plans": []
+  },
+  "bth1": {
+    "id": "bth1",
+    "name": "Hampden House",
+    "official_url": "https://www.hampdenhouse.com/floorplans",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-25T22:31:47.923Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2761,
+        "max": 3486,
+        "plans": []
+      },
+      "2BR": {
+        "min": 4409,
+        "max": 4764,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4409,
+    "price2_max": 4764,
+    "price2_plans": []
+  },
+  "bth2": {
+    "id": "bth2",
+    "name": "The Charles",
+    "official_url": "https://thecharlesmd.com/floorplans/",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-25T22:32:01.960Z",
+    "all_beds": {
+      "2BR": {
+        "min": 4890,
+        "max": 9165,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 4890,
+    "price2_max": 9165,
+    "price2_plans": []
+  },
+  "bth4": {
+    "id": "bth4",
+    "name": "Upstairs at Bethesda Row",
+    "official_url": "https://upstairsbethesda.com/floorplans/",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-25T22:32:29.695Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2555,
+        "max": 4015,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3505,
+        "max": 4286,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3505,
+    "price2_max": 4286,
+    "price2_plans": []
+  },
+  "b7": {
+    "id": "b7",
+    "name": "Randolph Towers",
+    "official_url": "https://www.rentrt.com/arlington-vaapartments/randolph-towers/floorplans/",
     "scraper_type": "entrata",
-    "scraped_at": "2026-05-24T19:10:09.429Z",
-    "error": "no JSol floor plan data found"
+    "scraped_at": "2026-05-25T22:32:42.409Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2085,
+        "max": 2085,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3150,
+        "max": 3150,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3150,
+    "price2_max": 3150,
+    "price2_plans": []
+  },
+  "b8": {
+    "id": "b8",
+    "name": "Liberty Tower",
+    "official_url": "https://www.equityapartments.com/arlington/ballston/liberty-tower-apartments",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T22:32:53.448Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2487,
+        "max": 2729,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3856,
+        "max": 3903,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3856,
+    "price2_max": 3903,
+    "price2_plans": []
+  },
+  "v5": {
+    "id": "v5",
+    "name": "Virginia Square Plaza",
+    "official_url": "https://www.rentvsp.com/arlington-va-apartments/virginia-square-plaza/conventional/",
+    "scraper_type": "millcreek",
+    "scraped_at": "2026-05-25T22:33:07.097Z",
+    "all_beds": {
+      "1BR": {
+        "min": 1975,
+        "max": 2295,
+        "plans": []
+      },
+      "2BR": {
+        "min": 2895,
+        "max": 2995,
+        "plans": []
+      },
+      "3BR": {
+        "min": 3695,
+        "max": 3795,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 2895,
+    "price2_max": 2995,
+    "price2_plans": [],
+    "price3_min": 3695,
+    "price3_max": 3795,
+    "price3_plans": []
+  },
+  "c6": {
+    "id": "c6",
+    "name": "Bell at Courthouse",
+    "official_url": "https://www.bellatcourthouse.com/floorplans",
+    "scraper_type": "rentcafe",
+    "scraped_at": "2026-05-25T22:33:17.439Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2796,
+        "max": 5453,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3396,
+        "max": 7000,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3396,
+    "price2_max": 7000,
+    "price2_plans": []
+  },
+  "c3": {
+    "id": "c3",
+    "name": "Meridian at Courthouse Commons",
+    "official_url": "https://www.meridiancourthouse.com/arlington/meridian-at-courthouse-commons/conventional/",
+    "scraper_type": "millcreek",
+    "scraped_at": "2026-05-25T22:28:15.288Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2548,
+        "max": 3300,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3775,
+        "max": 3948,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3775,
+    "price2_max": 3948,
+    "price2_plans": []
   }
 }
