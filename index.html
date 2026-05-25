@@ -91,11 +91,11 @@
         if (!dirty) { setEditNote(note || ""); setEditScore(score || 0); }
       }, [note, score]);
 
-      const priceBadge = hi => {
+      const priceBadge = (hi, source) => {
+        if (source === "official" || (hi && hi !== "zillow"))
+          return <span style={{fontSize:10,background:"#dcfce7",color:"#15803d",padding:"2px 6px",borderRadius:4,fontWeight:600}}>✓ official</span>;
         if (hi === "zillow")
           return <span style={{fontSize:10,background:"#dbeafe",color:"#1d4ed8",padding:"2px 6px",borderRadius:4,fontWeight:600}}>✓ Zillow</span>;
-        if (hi)
-          return <span style={{fontSize:10,background:"#dcfce7",color:"#15803d",padding:"2px 6px",borderRadius:4,fontWeight:600}}>✓ official</span>;
         return <span style={{fontSize:10,background:"#fef9c3",color:"#92400e",padding:"2px 6px",borderRadius:4}}>est.</span>;
       };
 
@@ -112,6 +112,7 @@
                 <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap", marginBottom:4 }}>
                   <span style={{ fontSize:11, fontWeight:600, padding:"2px 8px", borderRadius:20, ...hoodStyle(b.hood) }}>{b.hood}</span>
                   {b.visited && <span style={{ fontSize:11, fontWeight:700, padding:"2px 7px", borderRadius:20, background:"#ecfdf5", color:"#065f46" }}>✓ visited</span>}
+                  {b.priceSource === "official" && <span style={{ fontSize:11, fontWeight:600, padding:"2px 7px", borderRadius:20, background:"#dcfce7", color:"#15803d" }}>✓ official</span>}
                   {score > 0 && <span style={{ fontSize:11, fontWeight:700, padding:"2px 7px", borderRadius:20, background:"#fef3c7", color:"#b45309" }}>My score: {score}/10</span>}
                 </div>
                 <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:"#0f172a", lineHeight:1.3 }}>{b.name}</h3>
@@ -127,11 +128,11 @@
               <span style={{ fontSize:11, fontWeight:600, padding:"2px 8px", borderRadius:20, background:gymC.bg, color:gymC.text }}>{b.gym} gym</span>
             </div>
             <div style={{ display:"flex", gap:10, marginTop:10 }}>
-              {[["2BR", b.price2, b.price2hi], ["3BR", b.price3, b.price3hi]].map(([lbl, lo, hi]) => (
+              {[["2BR", b.price2, b.price2hi, b.priceSource], ["3BR", b.price3, b.price3hi, null]].map(([lbl, lo, hi, src]) => (
                 <div key={lbl} style={{ flex:1, background:"#f8fafc", borderRadius:10, padding:"8px 10px" }}>
                   <div style={{ display:"flex", alignItems:"center", gap:4, marginBottom:3 }}>
                     <span style={{ fontSize:10, color:"#94a3b8", textTransform:"uppercase", letterSpacing:".05em" }}>{lbl}</span>
-                    {priceBadge(hi)}
+                    {priceBadge(hi, src)}
                   </div>
                   <div style={{ fontSize:15, fontWeight:700, color:"#0f172a" }}>{priceDisplay(lo, hi)}</div>
                 </div>
@@ -203,13 +204,22 @@
       const [gymFilter, setGymFilter] = useState("All");
 
       useEffect(() => {
-        // Load buildings.json and Firebase notes in parallel
+        // Load buildings.json, prices.json, and Firebase notes in parallel
         Promise.all([
           fetch('./buildings.json').then(r => r.json()),
+          fetch('./prices.json').then(r => r.json()).catch(() => ({})),
           dbRead(),
         ])
-          .then(([bldgs, notes]) => {
-            setBuildings(bldgs);
+          .then(([bldgs, prices, notes]) => {
+            const merged = bldgs.map(b => {
+              const p = prices[b.id];
+              if (!p || !p.price2_min) return b;
+              const lo = `$${p.price2_min.toLocaleString()}`;
+              const hi = p.price2_max && p.price2_max > p.price2_min
+                ? `$${p.price2_max.toLocaleString()}` : null;
+              return { ...b, price2: hi ? lo : `${lo}+`, price2hi: hi, priceSource: "official" };
+            });
+            setBuildings(merged);
             setNotes(notes || {});
             setDbStatus("ok");
           })
