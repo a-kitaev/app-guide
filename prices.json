@@ -650,5 +650,180 @@
     "price2_min": 3775,
     "price2_max": 3948,
     "price2_plans": []
+  },
+  "bth9": {
+    "id": "bth9",
+    "name": "The Elm",
+    "official_url": "https://www.livetheelm.com/residences.html",
+    "scraper_type": "theelm",
+    "scraped_at": "2026-05-25T23:56:46.299Z",
+    "all_beds": {
+      "0BR": {
+        "min": 2077,
+        "max": 2352,
+        "plans": []
+      },
+      "1BR": {
+        "min": 2688,
+        "max": 3869,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3423,
+        "max": 6255,
+        "plans": []
+      },
+      "3BR": {
+        "min": 6560,
+        "max": 7629,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3423,
+    "price2_max": 6255,
+    "price2_plans": [],
+    "price3_min": 6560,
+    "price3_max": 7629,
+    "price3_plans": []
+  },
+  "bth13": {
+    "id": "bth13",
+    "name": "Ellis",
+    "official_url": "https://ellisbethesda.com/floorplans/",
+    "scraper_type": "jonah",
+    "scraped_at": "2026-05-26T00:12:43.671Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2450,
+        "max": 2561,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3131,
+        "max": 4557,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3131,
+    "price2_max": 4557,
+    "price2_plans": []
+  },
+  "bth16": {
+    "id": "bth16",
+    "name": "The Edge",
+    "official_url": "https://www.equityapartments.com/maryland/bethesda/the-edge-apartments",
+    "scraper_type": "equity",
+    "scraped_at": "2026-05-25T23:30:13.145Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2210,
+        "max": 2399,
+        "plans": []
+      },
+      "2BR": {
+        "min": 1922,
+        "max": 3346,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 1922,
+    "price2_max": 3346,
+    "price2_plans": []
+  },
+  "bth11": {
+    "id": "bth11",
+    "name": "Solaire 7077",
+    "official_url": "https://www.solaire7077.com/floor-plans",
+    "scraper_type": "solaire",
+    "scraped_at": "2026-05-25T23:57:50.698Z",
+    "error": "no Solaire floor plan data found"
+  },
+  "bth12": {
+    "id": "bth12",
+    "name": "Solaire 7607",
+    "official_url": "https://www.solaire7607.com/floor-plans?bedroom=two",
+    "scraper_type": "solaire",
+    "scraped_at": "2026-05-25T23:58:50.991Z",
+    "all_beds": {
+      "2BR": {
+        "min": 3604,
+        "max": 4632,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3604,
+    "price2_max": 4632,
+    "price2_plans": []
+  },
+  "bth14": {
+    "id": "bth14",
+    "name": "Bethesda Place",
+    "official_url": "https://bethesdaplace.net/floor-plans/",
+    "scraper_type": "generic",
+    "scraped_at": "2026-05-25T23:33:07.280Z",
+    "error": "no prices found by generic extractor"
+  },
+  "bth15": {
+    "id": "bth15",
+    "name": "4909 Auburn",
+    "official_url": "https://4909auburn.com/floorplans/",
+    "scraper_type": "bozzuto_new",
+    "scraped_at": "2026-05-26T00:01:31.779Z",
+    "all_beds": {
+      "0BR": {
+        "min": 2083,
+        "max": 2083,
+        "plans": []
+      },
+      "1BR": {
+        "min": 2672,
+        "max": 3122,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3449,
+        "max": 4323,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3449,
+    "price2_max": 4323,
+    "price2_plans": []
+  },
+  "bth17": {
+    "id": "bth17",
+    "name": "8001 Woodmont",
+    "official_url": "https://www.8001woodmont.com/floorplans",
+    "scraper_type": "woodmont",
+    "scraped_at": "2026-05-26T00:04:30.519Z",
+    "all_beds": {
+      "1BR": {
+        "min": 2424,
+        "max": 3066,
+        "plans": []
+      },
+      "2BR": {
+        "min": 3341,
+        "max": 3971,
+        "plans": []
+      }
+    },
+    "source": "official_site",
+    "price2_min": 3341,
+    "price2_max": 3971,
+    "price2_plans": []
+  },
+  "bth10": {
+    "id": "bth10",
+    "name": "Element 28",
+    "official_url": "https://www.element28apts.com/floorplans",
+    "scraper_type": "rentcafe",
+    "scraped_at": "2026-05-25T23:34:16.129Z",
+    "error": "no RentCafe floor plan data found"
   }
 }

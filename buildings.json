@@ -578,7 +578,8 @@
     "gym": "Great",
     "gymNote": "Club-style 24-hr fitness center \u00b7 sky lounge \u00b7 rooftop",
     "desc": "LEED Gold-certified across two buildings. Sky lounge, rooftop terrace with entertainment kitchen. Timeless hardwood floors, chef-inspired kitchens. Walk score 97.",
-    "why": "LEED Gold + walk score 97 = excellent urban sustainability credentials. Sky lounge and entertainment kitchen are genuine differentiators."
+    "why": "LEED Gold + walk score 97 = excellent urban sustainability credentials. Sky lounge and entertainment kitchen are genuine differentiators.",
+    "visited": true
   },
   {
     "id": "bth4",
@@ -597,7 +598,8 @@
     "gym": "Great",
     "gymNote": "Well-equipped gym + hot tub + media room + concierge",
     "desc": "Above Bethesda Row's dining and retail strip. 24/7 concierge, hot tub, media room. Dozens of restaurants literally downstairs.",
-    "why": "Restaurant lifestyle taken to the extreme \u2014 world-class dining is literally downstairs."
+    "why": "Restaurant lifestyle taken to the extreme \u2014 world-class dining is literally downstairs.",
+    "visited": true
   },
   {
     "id": "bth5",
@@ -677,7 +679,189 @@
     "gym": "Great",
     "gymNote": "Fitness center \u00b7 outdoor lounge \u00b7 dog park + Capital Crescent Trail access",
     "desc": "Between downtown Bethesda and the Capital Crescent Trail. Sophisticated amenity areas, outdoor lounges. Private dog park. Trail access to Silver Spring or Georgetown.",
-    "why": "Unique differentiator: Capital Crescent Trail at your doorstep. Bike or run to Georgetown directly."
+    "why": "Unique differentiator: Capital Crescent Trail at your doorstep. Bike or run to Georgetown directly.",
+    "visited": true
+  },
+  {
+    "id": "bth9",
+    "hood": "Bethesda",
+    "name": "The Elm",
+    "addr": "4710 Elm St, Bethesda, MD 20814",
+    "official_url": "https://www.livetheelm.com/residences.html",
+    "scraper": {
+      "type": "theelm"
+    },
+    "price2": "$5,710+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 3.8,
+    "metro": "1 min · Bethesda (Red Line)",
+    "gym": "Great",
+    "gymNote": "28th floor rooftop pool · fitness center · yoga studio · 17th floor terrace",
+    "desc": "28-story LEED Gold, 456 units, at the Bethesda Metro entrance. Rooftop pool on 28th floor, yoga studio, 17th floor landscaped terrace. Very large 2BR floor plans (1,700+ sq ft). Bozzuto-managed.",
+    "why": "At the metro entrance. Largest 2BR floor plans in Bethesda. 28th floor rooftop pool is the highest in the area.",
+    "visited": true
+  },
+  {
+    "id": "bth10",
+    "hood": "Bethesda",
+    "name": "Element 28",
+    "addr": "100 Commerce Ln, Bethesda, MD 20814",
+    "official_url": "https://www.element28apts.com/floorplans",
+    "scraper": {
+      "type": "rentcafe"
+    },
+    "price2": "$4,177+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.0,
+    "metro": "7 min · Bethesda (Red Line)",
+    "gym": "Medium",
+    "gymNote": "Fitness studio · rooftop deck with retractable glass wall · wine room · no pool",
+    "desc": "16-story boutique building, 101 units. Bosch and Thermador appliances. Rooftop deck with retractable glass wall, bike workshop, wine room. Bozzuto-managed, Woodmont Triangle.",
+    "why": "Boutique scale (101 units) with premium appliances. Wine room and glass-wall rooftop are distinctive. Strong Woodmont Triangle walkability.",
+    "visited": true
+  },
+  {
+    "id": "bth11",
+    "hood": "Bethesda",
+    "name": "Solaire 7077",
+    "addr": "7077 Woodmont Ave, Bethesda, MD 20814",
+    "official_url": "https://www.solaire7077.com/floor-plans",
+    "scraper": {
+      "type": "solaire"
+    },
+    "price2": "$4,079+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.0,
+    "metro": "5 min · Bethesda (Red Line)",
+    "gym": "Medium",
+    "gymNote": "Fitness center · rooftop terrace · cyber cafe lounge · no pool",
+    "desc": "Washington Property Company mid-rise near downtown Bethesda. Fitness center, rooftop terrace, cyber cafe lounge, pet play area. 2-level underground parking.",
+    "why": "Solid location between metro and Bethesda Row. Established management. Rooftop terrace with good city views.",
+    "visited": true
+  },
+  {
+    "id": "bth12",
+    "hood": "Bethesda",
+    "name": "Solaire 7607",
+    "addr": "7607 Old Georgetown Rd, Bethesda, MD 20814",
+    "official_url": "https://www.solaire7607.com/floor-plans?bedroom=two",
+    "scraper": {
+      "type": "solaire"
+    },
+    "price2": "$2,600+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.2,
+    "metro": "2 min · Bethesda (Red Line)",
+    "gym": "Medium",
+    "gymNote": "Penthouse fitness center · rooftop terrace · dog grooming · no pool",
+    "desc": "22-story 2024 luxury building, 197 units, one block from Bethesda Metro. Penthouse-level fitness center, rooftop terrace, dog grooming. Washington Property Company managed.",
+    "why": "Newest luxury high-rise in Bethesda, one block from metro. Competitive pricing for a 2024 building. Penthouse gym views.",
+    "visited": true
+  },
+  {
+    "id": "bth13",
+    "hood": "Bethesda",
+    "name": "Ellis",
+    "addr": "4918 Saint Elmo Ave, Bethesda, MD 20814",
+    "official_url": "https://ellisbethesda.com/floorplans/",
+    "scraper": {
+      "type": "jonah"
+    },
+    "price2": "$3,621+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.4,
+    "metro": "8 min · Bethesda (Red Line)",
+    "gym": "Medium",
+    "gymNote": "Fitness center · rooftop deck · eSpot cybercafé · no pool",
+    "desc": "17-story, 200 units, Woodmont Triangle. Rooftop deck, eSpot cybercafé. Frequent concession specials (up to 1.5 months free). Bozzuto-managed. Highly rated resident reviews.",
+    "why": "Best-rated Bozzuto building in Bethesda. Woodmont Triangle walkability. Concessions bring effective rent well below ask.",
+    "visited": true
+  },
+  {
+    "id": "bth14",
+    "hood": "Bethesda",
+    "name": "Bethesda Place",
+    "addr": "7701 Woodmont Ave, Bethesda, MD 20814",
+    "official_url": "https://bethesdaplace.net/floor-plans/",
+    "scraper": {
+      "type": "none",
+      "note": "No prices published — page shows only floor plan names and PDFs"
+    },
+    "price2": "$2,999+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.5,
+    "metro": "2 min · Bethesda (Red Line)",
+    "gym": "Small",
+    "gymNote": "24-hr fitness room · in-unit laundry · EV charging · gated parking · no pool",
+    "desc": "Established Polinger building connected to Bethesda Metro via footbridge. Largest floor plans in downtown Bethesda. EV charging, gated parking, coffee bar. Consistently excellent staff reviews.",
+    "why": "Footbridge to metro — best station access on this list. Largest floor plans at lowest price in downtown Bethesda. Boutique family-run management consistently praised.",
+    "visited": true
+  },
+  {
+    "id": "bth15",
+    "hood": "Bethesda",
+    "name": "4909 Auburn",
+    "addr": "4909 Auburn Ave, Bethesda, MD 20814",
+    "official_url": "https://4909auburn.com/floorplans/",
+    "scraper": {
+      "type": "bozzuto_new"
+    },
+    "price2": "~$3,500+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.5,
+    "metro": "5 min · Bethesda (Red Line)",
+    "gym": "Great",
+    "gymNote": "Glass-wrapped fitness center · yoga studio · sauna · steam rooms · multiple green roof terraces · no pool",
+    "desc": "New 11-story building (opened Oct 2024), 167 units, Willow Bridge managed. Glass fitness center, yoga studio, sauna, steam rooms, green roof terraces. Pet spa. Up to 3 months free on new leases.",
+    "why": "Sauna + steam rooms unique in Bethesda. Newest building near the Gallery/Auburn corridor. Concessions make it the best value per amenity on this list.",
+    "visited": true
+  },
+  {
+    "id": "bth16",
+    "hood": "Bethesda",
+    "name": "The Edge",
+    "addr": "4885 Edgemoor Ln, Bethesda, MD 20814",
+    "official_url": "https://www.equityapartments.com/maryland/bethesda/the-edge-apartments",
+    "scraper": {
+      "type": "equity"
+    },
+    "price2": "$3,420+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.3,
+    "metro": "4 min · Bethesda (Red Line)",
+    "gym": "Great",
+    "gymNote": "Outdoor pool · fitness center · yoga studio · rooftop lounge · penthouse dining room",
+    "desc": "15-story LEED certified, 154 units, Equity Residential managed. Outdoor pool, yoga studio, rooftop lounge, penthouse dining room. Hardwood floors, in-unit laundry. Walk score 96.",
+    "why": "Best Equity property in Bethesda. LEED + outdoor pool + yoga + rooftop is a strong amenity package at a competitive price.",
+    "visited": true
+  },
+  {
+    "id": "bth17",
+    "hood": "Bethesda",
+    "name": "8001 Woodmont",
+    "addr": "8001 Woodmont Ave, Bethesda, MD 20814",
+    "official_url": "https://www.8001woodmont.com/floorplans",
+    "scraper": {
+      "type": "woodmont"
+    },
+    "price2": "$3,260+",
+    "price2hi": "zillow",
+    "price3": "N/A",
+    "rating": 4.3,
+    "metro": "5 min · Bethesda (Red Line)",
+    "gym": "Great",
+    "gymNote": "Heated outdoor pool · boutique fitness studio · OrangeTheory on ground floor · rooftop terrace · 24/7 concierge",
+    "desc": "18-story luxury, downtown Bethesda. Heated outdoor pool, rooftop terrace, 24/7 concierge, gas cooking. OrangeTheory on ground floor. Capital Crescent Trail access. Peterson Cos. managed (formerly JBG SMITH). Up to 2 months free.",
+    "why": "OrangeTheory on-site is a genuine differentiator for fitness-minded renters. Heated pool extends the season. Capital Crescent Trail steps away.",
+    "visited": true
   },
   {
     "id": "b7",
@@ -770,8 +954,8 @@
       "note": "Building page returns 404 on gables.com"
     },
     "price2": "$3,452+",
-    "price2hi": "zillow",
-    "price3": "$4,720+",
+    "price2hi": "",
+    "price3": "",
     "rating": 3.9,
     "metro": "4 min \u00b7 Courthouse / 6 min \u00b7 Rosslyn",
     "gym": "Great",
